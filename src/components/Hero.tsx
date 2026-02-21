@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import GlitchText from "./GlitchText";
-import NoiseBlob from "./NoiseBlob";
-import ParticleBackground from "./ParticleBackground";
 import ScrollIndicator from "./ScrollIndicator";
 import TextScramble from "./TextScramble";
 import TypewriterText from "./TypewriterText";
@@ -15,8 +13,6 @@ export default function Hero() {
       id="home"
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
     >
-      <ParticleBackground />
-      <NoiseBlob />
 
       {/* Warm radial overlays */}
       <div className="absolute inset-0 -z-[5]">
@@ -30,14 +26,14 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, width: 0 }}
             animate={{ opacity: 1, width: "3rem" }}
-            transition={{ duration: 0.8, delay: 1.7 }}
+            transition={{ duration: 0.8, delay: 2.4 }}
             className="mb-8 h-px bg-accent"
           />
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.8 }}
+            transition={{ duration: 0.6, delay: 2.5 }}
             className="mb-5 font-mono text-[11px] uppercase tracking-[0.35em] text-foreground-dark-muted"
           >
             <TextScramble text="Software Developer — India" trigger="view" speed={25} />
@@ -49,7 +45,7 @@ export default function Hero() {
               text="Thatipelly"
               className="block text-foreground-dark"
               speed={60}
-              delay={2.0}
+              delay={2.7}
               onComplete={() => setNameComplete(true)}
             />
             {nameComplete && (

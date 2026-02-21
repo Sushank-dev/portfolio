@@ -1,15 +1,39 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-export default function Preloader() {
+type PreloaderProps = {
+  loading?: boolean;
+  progress?: number;
+  onSkip?: () => void;
+};
+
+function clampProgress(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+export default function Preloader({ loading, progress = 0, onSkip }: PreloaderProps) {
+  const isControlled = typeof loading === "boolean";
   const [isLoading, setIsLoading] = useState(true);
+  const [fallbackProgress, setFallbackProgress] = useState(0);
+
+  const visible = isControlled ? loading : isLoading;
+  const displayProgress = isControlled ? clampProgress(progress) : fallbackProgress;
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    if (isControlled) return;
+
+    const timer = setTimeout(() => setIsLoading(false), 2200);
+    const progressTimer = setInterval(() => {
+      setFallbackProgress((current) => {
+        if (current >= 100) return 100;
+        return current + 5;
+      });
+    }, 100);
 
     // Allow skip with Space or Enter
     const onKey = (e: KeyboardEvent) => {
       if (e.code === "Space" || e.code === "Enter") {
+        onSkip?.();
         setIsLoading(false);
       }
     };
@@ -17,13 +41,27 @@ export default function Preloader() {
 
     return () => {
       clearTimeout(timer);
+      clearInterval(progressTimer);
       window.removeEventListener("keydown", onKey);
     };
-  }, []);
+  }, [isControlled, onSkip]);
+
+  useEffect(() => {
+    if (!isControlled || !visible) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.code === "Space" || event.code === "Enter") {
+        onSkip?.();
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isControlled, onSkip, visible]);
 
   return (
     <AnimatePresence>
-      {isLoading && (
+      {visible && (
         <motion.div
           className="fixed inset-0 z-[200] flex items-center justify-center bg-surface-dark"
           exit={{ opacity: 0 }}
@@ -46,8 +84,8 @@ export default function Preloader() {
               <motion.div
                 className="h-full bg-accent"
                 initial={{ width: "0%" }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1.4, ease: "easeInOut" }}
+                animate={{ width: `${displayProgress}%` }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               />
             </div>
 
@@ -57,7 +95,7 @@ export default function Preloader() {
               transition={{ delay: 0.5 }}
               className="mt-6 font-mono text-[9px] uppercase tracking-[0.35em] text-foreground-dark-muted/30"
             >
-              Press space to skip
+              {displayProgress}% • press space to skip
             </motion.p>
           </div>
         </motion.div>

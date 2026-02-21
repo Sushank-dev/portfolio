@@ -1,14 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
+import { sectionConfigs } from "../config/sections";
 import { socialLinks } from "../data/socialLinks";
-
-const footerLinks = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Journey", href: "#experience" },
-  { label: "Contact", href: "#contact" },
-];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -41,7 +34,7 @@ export default function Footer() {
               Navigation
             </h4>
             <ul className="space-y-2.5">
-              {footerLinks.map((link) => (
+              {sectionConfigs.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}

@@ -1,15 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { sectionConfigs } from "../config/sections";
 import ThemeToggle from "./ThemeToggle";
-
-const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Journey", href: "#experience" },
-  { label: "Contact", href: "#contact" },
-];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,7 +39,7 @@ export default function Navbar() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 1.6 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 2.3 }}
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
         isScrolled
           ? "bg-surface-dark/80 backdrop-blur-xl dark:bg-surface-dark/80"
@@ -65,7 +58,7 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-10 md:flex">
-          {navLinks.map((link) => (
+          {sectionConfigs.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -113,7 +106,7 @@ export default function Navbar() {
             className="overflow-hidden border-t border-foreground-dark-muted/10 bg-surface-dark/95 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-6">
-              {navLinks.map((link, i) => (
+              {sectionConfigs.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}

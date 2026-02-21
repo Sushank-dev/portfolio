@@ -19,6 +19,8 @@ import Marquee from "./Marquee";
 import SectionWrapper from "./SectionWrapper";
 import SplitText from "./SplitText";
 
+import { SpotlightCard } from "./SpotlightCard";
+
 const iconMap: Record<string, React.ReactNode> = {
   react: <Globe size={22} />,
   threejs: <Layers size={22} />,
@@ -90,14 +92,15 @@ export default function Skills() {
                       custom={i}
                       whileHover={{ y: -6 }}
                       transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                      className="group flex flex-col items-center gap-3 rounded-xl border border-foreground-dark-muted/8 bg-surface-dark-elevated/50 p-5 transition-all duration-300 hover:border-accent/20 hover:bg-surface-dark-card"
                     >
-                      <div className="text-foreground-dark-muted/50 transition-colors duration-300 group-hover:text-accent">
-                        {iconMap[skill.icon] || <Code2 size={22} />}
-                      </div>
-                      <span className="text-center text-[11px] font-medium tracking-[0.06em] text-foreground-dark-muted transition-colors duration-300 group-hover:text-foreground-dark">
-                        {skill.name}
-                      </span>
+                      <SpotlightCard className="flex h-full flex-col items-center gap-3 p-5">
+                        <div className="text-foreground-dark-muted/50 transition-colors duration-300 group-hover:text-accent">
+                          {iconMap[skill.icon] || <Code2 size={22} />}
+                        </div>
+                        <span className="text-center text-[11px] font-medium tracking-[0.06em] text-foreground-dark-muted transition-colors duration-300 group-hover:text-foreground-dark">
+                          {skill.name}
+                        </span>
+                      </SpotlightCard>
                     </motion.div>
                   ))}
               </div>

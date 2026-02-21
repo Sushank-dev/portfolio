@@ -81,7 +81,7 @@ function FloatingMesh() {
 
 export default function ParticleBackground() {
   return (
-    <div className="absolute inset-0 -z-10">
+    <div className="pointer-events-none fixed inset-0 -z-20">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 55 }}
         dpr={[1, 1.5]}

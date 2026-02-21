@@ -127,7 +127,7 @@ function Blob() {
 
 export default function NoiseBlob() {
   return (
-    <div className="absolute inset-0 -z-[8] opacity-60">
+    <div className="pointer-events-none fixed inset-0 -z-[18] opacity-60">
       <Canvas
         camera={{ position: [0, 0, 4.5], fov: 50 }}
         dpr={[1, 1.5]}
