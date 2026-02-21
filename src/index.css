@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────── Base ───────────── */
+
+:root {
+  font-family: "Inter", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+body { min-height: 100vh; overflow-x: hidden; }
+
+/* ───────────── Dark ───────────── */
+
+html.dark { color-scheme: dark; background: #111010; color: #ede9e3; }
+html.dark body { background: #111010; }
+
+/* ───────────── Light ───────────── */
+
+html.light { color-scheme: light; background: #f5f2ed; color: #2a2725; }
+html.light body { background: #f5f2ed; }
+
+/* ───────────── Selection ───────────── */
+
+html.dark ::selection { background: rgba(212, 98, 43, 0.35); color: #fff; }
+html.light ::selection { background: rgba(212, 98, 43, 0.25); color: #2a2725; }
+
+/* ───────────── Scrollbar ───────────── */
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(138, 130, 121, 0.3); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(138, 130, 121, 0.5); }
+
+/* ───────────── Grain ───────────── */
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  mix-blend-mode: overlay;
+  opacity: 0.025;
+}
+
+html.light .grain { opacity: 0.02; }
+
+/* ───────────── Glitch ───────────── */
+
+.glitch-layer-1 { color: #d4622b; animation: g1 0.35s ease-in-out; }
+.glitch-layer-2 { color: #c9a96e; animation: g2 0.35s ease-in-out; }
+
+@keyframes g1 {
+  0%, 100% { clip-path: inset(0); transform: translate(0); }
+  20% { clip-path: inset(30% 0 50% 0); transform: translate(-3px, 1px); }
+  40% { clip-path: inset(10% 0 70% 0); transform: translate(3px, -1px); }
+  60% { clip-path: inset(60% 0 10% 0); transform: translate(-1px, 3px); }
+}
+
+@keyframes g2 {
+  0%, 100% { clip-path: inset(0); transform: translate(0); }
+  20% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
+  40% { clip-path: inset(0% 0 60% 0); transform: translate(-3px, 1px); }
+  60% { clip-path: inset(20% 0 40% 0); transform: translate(1px, -3px); }
+}
+
+/* ───────────── Horizontal rule accent ───────────── */
+
+.hr-accent {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 98, 43, 0.4), transparent);
+}
+
+/* ───────────── Transitions ───────────── */
+
+html.dark, html.light {
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
