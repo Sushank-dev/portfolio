@@ -26,7 +26,7 @@ export const projects: Project[] = [
       "Headless storefront with a cinematic product reveal and GPU-accelerated transitions.",
     stack: ["React", "TypeScript", "Framer Motion", "Node.js"],
     url: "#",
-    color: "from-[#ff7a18] to-[#ff4d4f]"
+    color: "from-[#888888] to-[#444444]"
   },
   {
     title: "Pulse Analytics",
@@ -34,7 +34,7 @@ export const projects: Project[] = [
       "Realtime observability dashboard that blends charts with narrative UI and live incident overlays.",
     stack: ["Next.js", "Tailwind", "WebSocket", "Prisma"],
     url: "#",
-    color: "from-[#16e0d9] to-[#2f80ed]"
+    color: "from-[#aaaaaa] to-[#555555]"
   },
   {
     title: "Orbit Studio",
@@ -42,7 +42,7 @@ export const projects: Project[] = [
       "Interactive agency landing page using 3D objects, smooth camera choreography, and scroll-linked scenes.",
     stack: ["Three.js", "@react-three/fiber", "GSAP", "Vercel"],
     url: "#",
-    color: "from-[#f9f871] to-[#f6a400]"
+    color: "from-[#cccccc] to-[#666666]"
   }
 ];
 

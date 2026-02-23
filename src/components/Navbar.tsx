@@ -12,17 +12,12 @@ export default function Navbar() {
   useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 50);
-
-      // Scroll spy
       const sections = ["contact", "experience", "projects", "skills", "about", "home"];
       for (const id of sections) {
         const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 150) {
-            setActiveSection(id);
-            break;
-          }
+        if (el && el.getBoundingClientRect().top <= 150) {
+          setActiveSection(id);
+          break;
         }
       }
     };
@@ -30,42 +25,29 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (href: string) => {
-    const id = href.replace("#", "");
-    return activeSection === id;
-  };
+  const isActive = (href: string) => activeSection === href.replace("#", "");
 
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 2.3 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? "bg-surface-dark/80 backdrop-blur-xl dark:bg-surface-dark/80"
-          : "bg-transparent"
+        isScrolled ? "bg-surface/80 backdrop-blur-xl" : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-12">
-        <a
-          href="#home"
-          className="font-heading text-lg font-semibold tracking-wide text-foreground-dark transition-colors dark:text-foreground-dark"
-          data-magnetic
-        >
-          sushank
-          <span className="text-accent">.</span>
+        <a href="#home" className="font-heading text-lg font-semibold tracking-wide text-fg">
+          sushank<span className="text-accent">.</span>
         </a>
 
-        {/* Desktop Nav */}
         <nav className="hidden items-center gap-10 md:flex">
           {sectionConfigs.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className={`relative text-[13px] font-medium uppercase tracking-[0.15em] transition-colors duration-300 ${
-                isActive(link.href)
-                  ? "text-accent"
-                  : "text-foreground-dark-muted hover:text-accent dark:text-foreground-dark-muted"
+                isActive(link.href) ? "text-accent" : "text-fg-muted hover:text-fg"
               }`}
             >
               {link.label}
@@ -83,15 +65,11 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground-dark-muted/20 transition-colors hover:border-accent/40 md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border transition-colors hover:border-accent/40 md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? (
-              <X size={16} className="text-foreground-dark" />
-            ) : (
-              <Menu size={16} className="text-foreground-dark" />
-            )}
+            {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </div>
@@ -103,7 +81,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden border-t border-foreground-dark-muted/10 bg-surface-dark/95 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-t border-border bg-surface/95 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-6">
               {sectionConfigs.map((link, i) => (
@@ -115,9 +93,7 @@ export default function Navbar() {
                   transition={{ delay: i * 0.06 }}
                   onClick={() => setMobileOpen(false)}
                   className={`py-3 text-sm font-medium uppercase tracking-[0.12em] transition-colors hover:text-accent ${
-                    isActive(link.href)
-                      ? "text-accent"
-                      : "text-foreground-dark-muted"
+                    isActive(link.href) ? "text-accent" : "text-fg-muted"
                   }`}
                 >
                   {isActive(link.href) && (

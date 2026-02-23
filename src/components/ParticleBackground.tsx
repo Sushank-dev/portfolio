@@ -1,98 +1,131 @@
-import { Points, PointMaterial } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef, useMemo, Suspense, useEffect, useState } from "react";
-import * as THREE from "three";
+import { useEffect, useRef } from "react";
 import { useTheme } from "../context/ThemeContext";
 
-function Particles() {
+export default function ParticleBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme } = useTheme();
-  const ref = useRef<THREE.Points>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
-
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  const count = isMobile ? 300 : 800;
-  const positions = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 8;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let particlesArray: Particle[] = [];
+    let animationFrameId: number;
+
+    const mouse = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      mouse.x = event.x;
+      mouse.y = event.y;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    class Particle {
+      x: number;
+      y: number;
+      size: number;
+      speedX: number;
+      speedY: number;
+      opacity: number;
+
+      constructor() {
+        if (!canvas) throw new Error("Canvas is null");
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.1;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+
+      update(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        // Subtle parallax effect towards mouse
+        const dx = mouse.x - canvasWidth / 2;
+        const dy = mouse.y - canvasHeight / 2;
+        this.x -= dx * 0.0005;
+        this.y -= dy * 0.0005;
+
+        // Wrap around edges
+        if (this.x < 0) this.x = canvasWidth;
+        if (this.x > canvasWidth) this.x = 0;
+        if (this.y < 0) this.y = canvasHeight;
+        if (this.y > canvasHeight) this.y = 0;
+
+        this.draw(ctx);
+      }
+
+      draw(ctx: CanvasRenderingContext2D) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        // White particles in dark mode, black particles in light mode
+        ctx.fillStyle = theme === "dark" ? "#ffffff" : "#000000";
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
     }
-    return pos;
-  }, []);
 
-  useFrame((state) => {
-    if (!ref.current) return;
-    const time = state.clock.getElapsedTime();
-    ref.current.rotation.x = time * 0.02;
-    ref.current.rotation.y = time * 0.03;
+    const init = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particlesArray = [];
+      
+      const isMobile = window.innerWidth < 768;
+      const numberOfParticles = isMobile ? 100 : 400; // Adjust for performance
 
-    const { pointer } = state;
-    mouseRef.current.x += (pointer.x * 0.3 - mouseRef.current.x) * 0.03;
-    mouseRef.current.y += (pointer.y * 0.3 - mouseRef.current.y) * 0.03;
-    ref.current.position.x = mouseRef.current.x;
-    ref.current.position.y = mouseRef.current.y;
-  });
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    };
+
+    const animate = () => {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update(ctx, canvas.width, canvas.height);
+      }
+      
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const handleResize = () => {
+      if (!canvas) return;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    init();
+    animate();
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationFrameId);
+      // Optional: Clean up canvas memory
+      canvas.width = 0;
+      canvas.height = 0;
+    };
+  }, [theme]); // Re-run effect when theme changes so particles recolor instantly
 
   return (
-    <Points ref={ref} positions={positions} stride={3}>
-      <PointMaterial
-        transparent
-        color={theme === "dark" ? "#c9a96e" : "#a8612e"}
-        size={0.018}
-        sizeAttenuation
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        opacity={0.6}
-      />
-    </Points>
-  );
-}
-
-function FloatingMesh() {
-  const { theme } = useTheme();
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    const time = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = time * 0.06;
-    meshRef.current.rotation.y = time * 0.09;
-    meshRef.current.position.y = Math.sin(time * 0.4) * 0.2;
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <icosahedronGeometry args={[1.5, 1]} />
-      <meshStandardMaterial
-        color={theme === "dark" ? "#d4622b" : "#c9a96e"}
-        wireframe
-        transparent
-        opacity={0.08}
-      />
-    </mesh>
-  );
-}
-
-export default function ParticleBackground() {
-  return (
-    <div className="pointer-events-none fixed inset-0 -z-20">
-      <Canvas
-        camera={{ position: [0, 0, 6], fov: 55 }}
-        dpr={[1, 1.5]}
-        style={{ background: "transparent" }}
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.3} />
-          <Particles />
-          <FloatingMesh />
-        </Suspense>
-      </Canvas>
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 -z-[20] block h-full w-full bg-transparent"
+    />
   );
 }

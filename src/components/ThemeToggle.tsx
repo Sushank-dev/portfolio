@@ -8,7 +8,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex h-9 w-9 items-center justify-center rounded-full border border-foreground-dark-muted/20 transition-all hover:border-accent/40 hover:bg-accent/5"
+      className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border transition-all hover:border-accent/40 hover:bg-accent-dim"
       aria-label="Toggle theme"
     >
       <AnimatePresence mode="wait">
@@ -20,7 +20,7 @@ export default function ThemeToggle() {
             exit={{ rotate: 90, scale: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <Moon size={16} className="text-accent-secondary" />
+            <Moon size={16} className="text-fg-muted" />
           </motion.div>
         ) : (
           <motion.div
@@ -30,7 +30,7 @@ export default function ThemeToggle() {
             exit={{ rotate: -90, scale: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <Sun size={16} className="text-accent" />
+            <Sun size={16} className="text-fg-muted" />
           </motion.div>
         )}
       </AnimatePresence>

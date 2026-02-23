@@ -13,7 +13,6 @@ export default function Marquee({
   className = "",
   separator = "·",
 }: MarqueeProps) {
-  // Duplicate items for seamless loop
   const duplicated = [...items, ...items, ...items];
 
   return (
@@ -22,20 +21,16 @@ export default function Marquee({
         className="flex whitespace-nowrap"
         animate={{ x: ["0%", "-33.333%"] }}
         transition={{
-          x: {
-            duration: speed,
-            ease: "linear",
-            repeat: Infinity,
-          },
+          x: { duration: speed, ease: "linear", repeat: Infinity },
         }}
       >
         {duplicated.map((item, i) => (
           <span key={i} className="flex items-center">
-            <span className="px-4 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground-dark-muted/40 transition-colors hover:text-accent">
+            <span className="px-4 font-mono text-[11px] uppercase tracking-[0.2em] text-fg-faint transition-colors hover:text-accent">
               {item}
             </span>
             {i < duplicated.length - 1 && (
-              <span className="text-foreground-dark-muted/15">{separator}</span>
+              <span className="text-fg-faint/30">{separator}</span>
             )}
           </span>
         ))}

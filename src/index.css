@@ -18,27 +18,55 @@
 html { scroll-behavior: smooth; }
 body { min-height: 100vh; overflow-x: hidden; }
 
-/* ───────────── Dark ───────────── */
+/* ───────────── Dark Theme ───────────── */
 
-html.dark { color-scheme: dark; background: #111010; color: #ede9e3; }
-html.dark body { background: #111010; }
+html.dark {
+  --accent: #ffffff;
+  --accent-dim: rgba(255, 255, 255, 0.12);
+  --surface: #0a0a0a;
+  --surface-elevated: #111111;
+  --surface-card: #161616;
+  --fg: #f0f0f0;
+  --fg-muted: #888888;
+  --fg-faint: #444444;
+  --border: rgba(255, 255, 255, 0.08);
+  --glow: rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+  background: #0a0a0a;
+  color: #f0f0f0;
+}
+html.dark body { background: #0a0a0a; }
 
-/* ───────────── Light ───────────── */
+/* ───────────── Light Theme ───────────── */
 
-html.light { color-scheme: light; background: #f5f2ed; color: #2a2725; }
-html.light body { background: #f5f2ed; }
+html.light {
+  --accent: #1a1a1a;
+  --accent-dim: rgba(0, 0, 0, 0.08);
+  --surface: #fafafa;
+  --surface-elevated: #f2f2f2;
+  --surface-card: #ebebeb;
+  --fg: #1a1a1a;
+  --fg-muted: #666666;
+  --fg-faint: #aaaaaa;
+  --border: rgba(0, 0, 0, 0.08);
+  --glow: rgba(0, 0, 0, 0.04);
+  color-scheme: light;
+  background: #fafafa;
+  color: #1a1a1a;
+}
+html.light body { background: #fafafa; }
 
 /* ───────────── Selection ───────────── */
 
-html.dark ::selection { background: rgba(212, 98, 43, 0.35); color: #fff; }
-html.light ::selection { background: rgba(212, 98, 43, 0.25); color: #2a2725; }
+html.dark ::selection { background: rgba(255, 255, 255, 0.2); color: #000; }
+html.light ::selection { background: rgba(0, 0, 0, 0.15); color: #fff; }
 
 /* ───────────── Scrollbar ───────────── */
 
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(138, 130, 121, 0.3); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(138, 130, 121, 0.5); }
+::-webkit-scrollbar-thumb { background: rgba(128, 128, 128, 0.2); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(128, 128, 128, 0.4); }
 
 /* ───────────── Grain ───────────── */
 
@@ -49,36 +77,13 @@ html.light ::selection { background: rgba(212, 98, 43, 0.25); color: #2a2725; }
   opacity: 0.025;
 }
 
-html.light .grain { opacity: 0.02; }
-
-/* ───────────── Glitch ───────────── */
-
-.glitch-layer-1 { color: #d4622b; animation: g1 0.35s ease-in-out; }
-.glitch-layer-2 { color: #c9a96e; animation: g2 0.35s ease-in-out; }
-
-@keyframes g1 {
-  0%, 100% { clip-path: inset(0); transform: translate(0); }
-  20% { clip-path: inset(30% 0 50% 0); transform: translate(-3px, 1px); }
-  40% { clip-path: inset(10% 0 70% 0); transform: translate(3px, -1px); }
-  60% { clip-path: inset(60% 0 10% 0); transform: translate(-1px, 3px); }
-}
-
-@keyframes g2 {
-  0%, 100% { clip-path: inset(0); transform: translate(0); }
-  20% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
-  40% { clip-path: inset(0% 0 60% 0); transform: translate(-3px, 1px); }
-  60% { clip-path: inset(20% 0 40% 0); transform: translate(1px, -3px); }
-}
-
-/* ───────────── Horizontal rule accent ───────────── */
+/* ───────────── Utility ───────────── */
 
 .hr-accent {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 98, 43, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
 
-/* ───────────── Transitions ───────────── */
-
 html.dark, html.light {
-  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }

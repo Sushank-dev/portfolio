@@ -12,10 +12,10 @@ export default function Reveal({ id, children, className }: RevealProps) {
     <motion.section
       id={id}
       className={className}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 40, scale: 0.8 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ type: "spring", stiffness: 120, damping: 15 }}
     >
       {children}
     </motion.section>

@@ -26,7 +26,7 @@ export default function ScrollIndicator() {
         >
           <a
             href="#about"
-            className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-foreground-dark-muted/50 transition-colors hover:text-accent"
+            className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-fg-faint transition-colors hover:text-accent"
             aria-label="Scroll down"
           >
             <ChevronDown size={14} />
